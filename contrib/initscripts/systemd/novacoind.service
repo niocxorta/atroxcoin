@@ -1,0 +1,11 @@
+[Unit]
+Description=AtroxCoin daemon serivce
+After=network.target
+
+[Service]
+Type=simple
+User=AtroxCoin
+ExecStart=/opt/AtroxCoin/AtroxCoind
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,5 @@
+AtroxCoin-qt usr/bin
+share/pixmaps/AtroxCoin32.xpm usr/share/pixmaps
+share/pixmaps/AtroxCoin80.xpm usr/share/pixmaps
+debian/AtroxCoin-qt.desktop usr/share/applications
+debian/AtroxCoin-qt.protocol usr/share/kde4/services/

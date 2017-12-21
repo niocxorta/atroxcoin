@@ -1,0 +1,2 @@
+debian/bin/AtroxCoind usr/bin
+src/AtroxCoind usr/lib/AtroxCoin

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=AtroxCoin
+Comment=AtroxCoin P2P Cryptocurrency
+Comment[ru]=AtroxCoin, P2P криптовалюта
+Comment[fr]=AtroxCoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=AtroxCoin, eşten eşe kriptografik sanal para birimi
+Exec=/usr/bin/AtroxCoin-qt
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/AtroxCoin80.xpm
+MimeType=x-scheme-handler/AtroxCoin;
+Categories=Office;

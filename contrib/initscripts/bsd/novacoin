@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# PROVIDE: AtroxCoin
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# AtroxCoin_enable (bool): Set to NO by default. Set this variable to YES if you want to enable AtroxCoin service.
+# AtroxCoin_config (path): Set to /usr/local/etc/AtroxCoin.conf by default.
+# AtroxCoin_user:  The user account AtroxCoin daemon runs as. It uses 'root' user by default.
+# AtroxCoin_group: The group account AtroxCoin daemon runs as. It uses 'wheel' group by default.
+# AtroxCoin_datadir (str): Default to "/var/db/AtroxCoin". Base data directory.
+
+. /etc/rc.subr
+
+name=AtroxCoin
+rcvar=AtroxCoin_enable
+
+: ${AtroxCoin_enable:=NO}
+: ${AtroxCoin_config=/usr/local/etc/AtroxCoin.conf}
+: ${AtroxCoin_datadir=/var/db/AtroxCoin}
+: ${AtroxCoin_user="root"}
+: ${AtroxCoin_group="wheel"}
+
+required_files=${AtroxCoin_config}
+command=/usr/local/bin/AtroxCoind
+AtroxCoin_chdir=${AtroxCoin_datadir}
+pidfile="${AtroxCoin_datadir}/AtroxCoind.pid"
+stop_cmd=AtroxCoin_stop
+command_args="-conf=${AtroxCoin_config} -datadir=${AtroxCoin_datadir} -daemon -pid=${pidfile}"
+start_precmd="${name}_prestart"
+
+AtroxCoin_create_datadir()
+{
+	echo "Creating data directory"
+	eval mkdir -p ${AtroxCoin_datadir}
+	[ $? -eq 0 ] && chown -R ${AtroxCoin_user}:${AtroxCoin_group} ${AtroxCoin_datadir}
+}
+
+AtroxCoin_prestart()
+{
+	if [ ! -d "${AtroxCoin_datadir}/." ]; then
+		AtroxCoin_create_datadir || return 1
+	fi
+}
+
+AtroxCoin_requirepidfile()
+{
+	if [ ! "0`check_pidfile ${pidfile} ${command}`" -gt 1 ]; then
+		echo "${name} not running? (check $pidfile)."
+		exit 1
+	fi
+}
+
+AtroxCoin_stop()
+{
+    AtroxCoin_requirepidfile
+
+	echo "Stopping ${name}."
+	eval ${command} -conf=${AtroxCoin_config} -datadir=${AtroxCoin_datadir} stop
+	wait_for_pids ${rc_pid}
+}
+
+load_rc_config $name
+run_rc_command "$1"
